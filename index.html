@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Te Amo Mi Corazón de Melón</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #ffd1dc; /* Rosa pastel */
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: #d4145a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .arrow-container {
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: floatArrow 2s ease-in-out infinite;
+        }
+
+        @keyframes floatArrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .arrow {
+            width: 30px;
+            height: 30px;
+            border: solid #d4145a;
+            border-width: 3px 3px 0 0;
+            transform: rotate(135deg);
+            animation: flicker 1s infinite ease-in-out;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .arrow-text {
+            margin-top: 10px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2em;
+            color: #d4145a;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            clip-path: polygon(0 0, 50% 50%, 100% 0);
+            transform-origin: top;
+            transition: transform 0.4s ease;
+            border: 2px solid #ddd;
+        }
+
+        .heart {
+            color: #89cff0; /* Celeste */
+            font-size: 2em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: none;
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 800px;
+            height: 600px;
+        }
+
+        .spotify-container {
+            display: none;
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideUp 1s forwards;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            to {
+                bottom: 20px;
+            }
+        }
+
+        .floating-heart {
+            position: fixed;
+            font-size: 24px;
+            color: #89cff0; /* Celeste */
+            pointer-events: none;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), -100vh) rotate(var(--r));
+                opacity: 0;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background: #ff4b4b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #pdfViewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Te Amo Mi Corazón de Melón</h1>
+    
+    <div class="arrow-container">
+        <div class="arrow"></div>
+        <div class="arrow-text">Haz click aquí mi amor</div>
+    </div>
+
+    <div class="envelope" onclick="openLetter()">
+        <div class="front">
+            <div class="heart">💙</div> <!-- Cambié el color del corazón -->
+        </div>
+        <div class="flap"></div>
+    </div>
+
+    <div class="message" id="letterContent">
+        <button class="close-btn" onclick="closeLetter()">×</button>
+        <iframe id="pdfViewer" src="https://drive.google.com/file/d/1NqETK1xMqamrxDyVBQyQ-Zej6w_Au43_/preview"></iframe>
+    </div>
+
+    <div class="spotify-container" id="spotifyContent">
+        <iframe id="spotifyPlayer"
+                style="border-radius:12px" 
+                src="https://open.spotify.com/embed/track/21Ullb4TU8qMsQd0Iselng?autoplay=1" 
+                width="100%" 
+                height="152" 
+                frameBorder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+        </iframe>
+    </div>
+
+    <script>
+        let spotifyFrame;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '💙'; /* Cambié el color del corazón */
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+            heart.style.setProperty('--r', (Math.random() * 360) + 'deg');
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        function startHearts() {
+            setInterval(createHeart, 300);
+        }
+
+        function openLetter() {
+            document.querySelector('.flap').style.transform = 'rotateX(180deg)';
+            setTimeout(() => {
+                document.getElementById('letterContent').style.display = 'block';
+                document.getElementById('spotifyContent').style.display = 'block';
+                
+                // Reset Spotify iframe to force autoplay
+                spotifyFrame = document.getElementById('spotifyPlayer');
+                const currentSrc = spotifyFrame.src;
+                spotifyFrame.src = currentSrc;
+                
+                startHearts();
+            }, 500);
+        }
+
+        function closeLetter() {
+            document.getElementById('letterContent').style.display = 'none';
+            document.getElementById('spotifyContent').style.display = 'none';
+            document.querySelector('.flap').style.transform = 'rotateX(0deg)';
+            
+            // Stop the music by reloading the iframe
+            if(spotifyFrame) {
+                spotifyFrame.src = spotifyFrame.src.replace('?autoplay=1', '');
+            }
+        }
+    </script>
+</body>
+</html>
